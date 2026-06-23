@@ -4,15 +4,77 @@ Terminal-based Battleship game written in C++17.
 
 ## Requirements
 
-- CMake ≥ 3.16
-- Ninja
+- [CMake](https://cmake.org/) ≥ 3.16
+- [Ninja](https://ninja-build.org/) — the build backend used to compile the project
 - A C++17-capable compiler (GCC 9+, Clang 10+)
+
+Install Ninja if you don't have it yet:
+
+```bash
+# Debian/Ubuntu
+sudo apt install ninja-build
+
+# macOS (Homebrew)
+brew install ninja
+
+# Windows (Chocolatey / winget)
+choco install ninja
+winget install Ninja-build.Ninja
+```
+
+Verify the install with `ninja --version`.
 
 ## Build
 
+The project uses [Ninja](https://ninja-build.org/) as the CMake generator for fast,
+incremental builds. Building is a two-step process: configure once, then build.
+
+**1. Configure** — generate the Ninja build files into the `build/` directory:
+
 ```bash
 cmake -B build -G Ninja -DCMAKE_BUILD_TYPE=Release
+```
+
+**2. Build** — compile the project:
+
+```bash
 cmake --build build
+```
+
+The resulting binary is written to `build/battleship`.
+
+### Rebuilding
+
+After editing the source, just re-run the build step — Ninja only recompiles what
+changed:
+
+```bash
+cmake --build build
+```
+
+You can also invoke Ninja directly from inside the build directory:
+
+```bash
+ninja -C build
+```
+
+### Debug build
+
+Configure a separate directory with the `Debug` build type to get unoptimized
+binaries with debug symbols:
+
+```bash
+cmake -B build-debug -G Ninja -DCMAKE_BUILD_TYPE=Debug
+cmake --build build-debug
+```
+
+### Clean build
+
+Remove the generated artifacts and start over:
+
+```bash
+ninja -C build clean   # remove compiled objects, keep the configuration
+rm -rf build           # remove everything, including the Ninja configuration
 ```
 
 ## Run

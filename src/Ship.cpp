@@ -1,9 +1,9 @@
-#include "Ship.h"
+#include "ship.h"
 
-Ship::Ship(std::string name, int size)
-    : m_name(std::move(name)), m_size(size), m_hits(0) {}
+Ship::Ship(std::string name, int size, Orientation orientation)
+    : m_name(std::move(name)), m_size(size), m_hits(0), m_orientation(orientation) {}
 
-void Ship::addCell(int row, int col) {
+void Ship::add_cell(int row, int col) {
     m_cells.push_back({row, col});
 }
 
@@ -14,11 +14,11 @@ bool Ship::occupies(int row, int col) const {
     return false;
 }
 
-void Ship::registerHit() {
+void Ship::register_hit() {
     ++m_hits;
 }
 
-char Ship::cellChar(int row, int col) const {
+char Ship::cell_char(int row, int col) const {
     int idx = -1;
     for (int i = 0; i < (int)m_cells.size(); ++i) {
         if (m_cells[i].row == row && m_cells[i].col == col) {
@@ -34,7 +34,7 @@ char Ship::cellChar(int row, int col) const {
 
     if (m_size == 1) { return '#'; }
 
-    if (m_horizontal) {
+    if (m_orientation == Orientation::Horizontal) {
         if (isFirst) { return '<'; }
         if (isLast)  { return '>'; }
         return '#';

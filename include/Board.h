@@ -1,35 +1,44 @@
 #pragma once
-#include "Ship.h"
+#include "ship.h"
 #include <array>
 #include <memory>
 #include <vector>
 
 constexpr int BOARD_SIZE = 10;
 
-enum class CellState { Water, Ship, Hit, Miss };
+enum class CellState
+{
+    Water,
+    Ship,
+    Hit,
+    Miss
+};
 
-class Board {
+class Board
+{
 public:
     Board();
 
-    bool placeShip(std::shared_ptr<Ship> ship, int row, int col, bool horizontal);
-    bool attack(int row, int col);  // returns true on hit
+    bool place_ship(std::shared_ptr<Ship> ship, int row, int col);
 
-    bool allShipsSunk() const;
-    bool wasAttacked(int row, int col) const;
+    // returns true on hit
+    bool attack(int row, int col);
 
-    void printOwn() const;
-    void printEnemy() const;
+    bool all_ships_sunk() const;
 
-    char ownChar(int row, int col) const;
-    char enemyChar(int row, int col) const;
+    bool was_attacked(int row, int col) const;
 
-    Ship* shipAt(int row, int col) const;
+    // hide_ships = true renders un-hit ships as water (opponent's view).
+    void print(bool hide_ships) const;
+
+    char get_char_at(int row, int col, bool hide_ships) const;
+
+    Ship *get_ship_at(int row, int col) const;
 
 private:
     std::array<std::array<CellState, BOARD_SIZE>, BOARD_SIZE> m_grid;
     std::vector<std::shared_ptr<Ship>> m_ships;
 
-    bool cellsFree(int row, int col, int size, bool horizontal) const;
-    static void printHeader();
+    bool cells_free(int row, int col, int size, bool horizontal) const;
+    static void print_header();
 };

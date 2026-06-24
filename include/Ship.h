@@ -2,32 +2,40 @@
 #include <string>
 #include <vector>
 
-struct Cell {
+struct Cell
+{
     int row;
     int col;
 };
 
-class Ship {
-public:
-    Ship(std::string name, int size);
+enum class Orientation
+{
+    Horizontal,
+    Vertical
+};
 
-    const std::string& name() const { return m_name; }
+class Ship
+{
+public:
+    Ship(std::string name, int size, Orientation orientation);
+
+    const std::string &name() const { return m_name; }
     int size() const { return m_size; }
     int hits() const { return m_hits; }
-    bool isSunk() const { return m_hits >= m_size; }
+    bool is_sunk() const { return m_hits >= m_size; }
+    Orientation orientation() const { return m_orientation; }
 
-    void addCell(int row, int col);
-    void setHorizontal(bool h) { m_horizontal = h; }
+    void add_cell(int row, int col);
     bool occupies(int row, int col) const;
-    void registerHit();
+    void register_hit();
 
     // Returns the display character for this ship's cell: <#> (horizontal) or ^#v (vertical)
-    char cellChar(int row, int col) const;
+    char cell_char(int row, int col) const;
 
 private:
     std::string m_name;
     int m_size;
     int m_hits;
-    bool m_horizontal = true;
+    Orientation m_orientation;
     std::vector<Cell> m_cells;
 };
